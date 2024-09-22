@@ -17,8 +17,6 @@ const header_korzinka_btn = document.querySelector(".header_korzinka_btn")
 const cart_block = document.querySelector(".cart_block")
 const close = document.querySelector(".close")
 const btn = document.getElementsByClassName("seller_btn")
-const increment_btn = document.getElementsByClassName(".increment_btn")
-const decrement_btn = document.getElementsByClassName(".decrement_btn")
 
 import { getData, getItem, getLocal } from "./service.js";
 
@@ -28,6 +26,7 @@ const saveInfo = (item) => {
 
   if (!data) {
     item.user_count = 1;
+    item.user_price = item.price -(item.price / 100) * 24
     localStorage.setItem("data", JSON.stringify([item, ...oldData]));
   }
 };
@@ -63,6 +62,7 @@ const renderKorzinka = async () => {
     </div>
     </li>
   `).join("")
+
   cart_total_item.textContent = `${data.length}`
   cart_total_price.textContent = `TOTAL: $${total_price().toFixed(2)}`;
   cart_items_total.textContent = `TOTAL PRODUCTS: ${data.length}`;
