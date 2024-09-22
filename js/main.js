@@ -39,6 +39,7 @@ const total_price = () => {
 
 };
 
+// <button class="decrement_btn" data-decrement = "${item.id}">-</button>
 
 const renderKorzinka = async () => {
   const data = JSON.parse(localStorage.getItem("data")) || [];
@@ -55,7 +56,12 @@ const renderKorzinka = async () => {
         <div class = "cart_dic_inc_block">
           <button class="increment_btn" data-increment = "${item.id}" >+</button>
           <h1 class="cart_counter">${item.user_count}</h1>
-          <button class="decrement_btn" data-decrement = "${item.id}">-</button>
+            ${
+               item.user_count > 1
+                 ? `<button data-decrement="${item.id}" class="p-2 bg-gray-400">-</button>`
+                 : `<button data-id="${item.id}" class="p-2 bg-gray-400">X</button>`
+             }
+             
         </div>
       </div>
       <p class = "cart_dis">$${(item.price - (item.price / 100) * 24).toFixed(2)}</p>
@@ -137,11 +143,18 @@ seller.addEventListener("click", async (e) => {
 
 cart_list.addEventListener("click", (e) => {
   const id = e.target.dataset.id;
-  let data = JSON.parse(localStorage.getItem("data")) || [];
-  data = data.filter(item => item.id != id);
-  localStorage.setItem("data", JSON.stringify(data));
+  delettedItem(id)
   renderKorzinka()
 })
+
+const delettedItem = (id) => {
+  const data = JSON.parse(localStorage.getItem("data")) || [];
+  const newData = data.filter((item) => item.id != id);
+  localStorage.setItem("data", JSON.stringify(newData));
+
+  renderKorzinka();
+};
+
 
 header_korzinka_btn.addEventListener("click", () => {
   cart_block.style.display = "block";
